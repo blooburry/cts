@@ -1,14 +1,16 @@
-import { connect, MqttClient } from "mqtt"
 import { createInterface } from "node:readline";
 import { BewegingsSensorMessage } from "./dto.js";
+import { MqttPublisher } from "../common/mqtt-publisher.js";
+import { argv } from "node:process";
 
 function parseInput(clientId: string, raw: string): BewegingsSensorMessage {
-  if(parseInt(raw)) {
+  const num = parseFloat(raw);
+  if(!isNaN(num)) {
     return {
       clientId,
       date: new Date(),
       message: "beweging geconstateerd",
-      value: parseInt(raw)
+      value: num,
     }
   } else {
     switch(raw) {
@@ -29,31 +31,30 @@ function parseInput(clientId: string, raw: string): BewegingsSensorMessage {
   }
 }
 
-export function runPublisher(clientId: string) {
+function runPublisher(roomId: string, clientId: string) {
   const rl = createInterface({
     input: process.stdin,
     output: process.stdout
   });
 
-  const client = connect("mqtt://localhost:1883", { clientId });
-
-  client.on("connect", () => {
-    console.log("Publisher connected to broker");
-  });
-
-  client.on("error", (err) => {
-    console.error("Publisher error:", err);
-  });
+  const publisher = new MqttPublisher(clientId);
 
   console.log("Voor lichtsterkte in of 'Q' om het apparaat uit te zetten.");
 
   rl.on('line', (input: string) => {
-    client.publish(
-      'bewegingssensor',
-      JSON.stringify(
-        parseInput(clientId, input)
-      )
+    const msg = parseInput(clientId, input)
+    publisher.client.publish(
+      `${roomId}/${clientId}`,
+      JSON.stringify(msg),
+      (err) => {
+        if (err) console.error("Publish failed:", err);
+        else console.log("Published:", msg);
+      }
     );
   });
 }
 
+const roomId = argv[2];
+const clientId = argv[3];
+
+runPublisher(roomId, clientId);

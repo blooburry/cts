@@ -10,3 +10,11 @@ export const BewegingsSensorMessageDTO = object({
 });
 
 export type BewegingsSensorMessage = z.infer<typeof BewegingsSensorMessageDTO>;
+
+export const ConfigureLampMessageDTO = object({
+    maxBrightness: number(),
+    date: coerce.date(),
+    timeInterval: number(),
+})
+
+export type ConfigureLampMessage = z.infer<typeof ConfigureLampMessageDTO>;
