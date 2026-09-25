@@ -14,7 +14,7 @@ export class LampService {
     tijdsInterval: number = 5000
     private maxLichtsterkte: number = 1
     knipperPeriode: number = 1 // 1s period
-    kleur: {r: number, g: number, b: number, a: number} = {r: 255, g: 0, b: 0, a: 0}
+    kleur: {r: number, g: number, b: number, a: number} = {r: 255, g: 0, b: 0, a: 255}
     private worker: ChildProcess | null = null;
 
     constructor(id: string) {
@@ -60,6 +60,18 @@ export class LampService {
         this.syncColor();
     }
 
+    public setKleur(colour: {r: number, g: number, b: number}) {
+        this.kleur.r = colour.r;
+        this.kleur.g = colour.g;
+        this.kleur.b = colour.b;
+        this.syncColor()
+    }
+
+    public setPeriod(period: number) {
+        this.knipperPeriode = period;
+        this.syncPeriod();
+    }
+
     public getMaxLichtsterkte() { return this.maxLichtsterkte; }
 
 
@@ -84,6 +96,9 @@ export class LampService {
         this.worker?.send({ type: "color", value: this.kleur });
     }
 
+    private syncPeriod() {
+        this.worker?.send({ type: "period", value: this.knipperPeriode });
+    }
 }
 
 function controlLamp(message: BewegingsSensorMessage, lamp: LampService) {

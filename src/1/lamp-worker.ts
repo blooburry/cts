@@ -7,16 +7,17 @@ const knipperPeriode = Number(knipperPeriodeStr);
 
 let status: "aan" | "uit" = "uit";
 let color = kleur;
+let periodInFrames = knipperPeriode * 30;
 
 process.on("message", (msg: any) => {
   if (msg.type === "status") status = msg.value;
   if (msg.type === "color") color = msg.value;
+  if (msg.type === "period") periodInFrames = msg.value * 30;
 });
 
 InitWindow(400, 400, `Lamp ${id}`);
 SetTargetFPS(30);
 
-const periodInFrames = knipperPeriode * 30;
 let on = true;
 let blinkCounter = 0;
 
