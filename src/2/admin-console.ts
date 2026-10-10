@@ -82,7 +82,7 @@ class AdminConsole {
     const message: ConfigureLampMessage = {
       maxBrightness: parseFloat(maxLampBrightness),
       date: new Date(),
-      date: parseFloat(timeInterval),
+      blinkPeriod: parseFloat(timeInterval),
     };
 
     this.publisher.client.publish(

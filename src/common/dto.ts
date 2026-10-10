@@ -15,7 +15,7 @@ export const ConfigureLampMessageDTO = object({
   maxBrightness: optional(number()),
   date: coerce.date(),
   blinkPeriod: optional(number()),
-  color: optional(object({r: number(), g: number(), b: number()})),
+  colour: optional(object({ r: number(), g: number(), b: number() })),
 });
 
 export type ConfigureLampMessage = z.infer<typeof ConfigureLampMessageDTO>;
