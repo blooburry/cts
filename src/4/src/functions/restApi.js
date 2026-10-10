@@ -57,7 +57,7 @@ app.http('createPerson', {
     methods: ['POST'],
     route: 'people',
     handler: async (request) => {
-        const { body, error: parseError } = await readJson(request);
+        const { body, error: parseError } = await readJson(request);z
         if (parseError) return fail(400, parseError);
 
         const { value, error } = validate(body, false);

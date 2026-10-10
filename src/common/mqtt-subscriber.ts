@@ -7,7 +7,7 @@ client: MqttClient
     constructor(clientId: string){
 
         this.client = connect(
-            "mqtts://a0964b8c81284efdb5101e8ee20c1c31.s1.eu.hivemq.cloud:8883",
+            `mqtts://${env.HIVEMQ_BROKER_ID}.s1.eu.hivemq.cloud:8883`,
             {
                 clientId,
                 protocol: "mqtts",

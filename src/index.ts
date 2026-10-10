@@ -1,9 +1,10 @@
 import { runBroker } from "./1/mqtt-broker.js";
-import { LampService, runSubscriber } from "./1/lamp-service.js";
+import { Lamp } from "./1/lamp.js";
+import { runSubscriber } from "./1/lamp-mqtt-subscriber.js";
 import { run_sample_device } from "./3/simple_sample_device.js";
 import { run_door } from "./3/door.js";
 import { run_service } from "./3/service.js";
-import { run_lamp_device } from "./3/lamp.js";
+import { run_lamp_device } from "./3/lamp-iot-device.js";
 
 console.log("=== PRACTICUM 3 START ===");
 // await runBroker();
